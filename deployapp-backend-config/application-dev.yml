@@ -1,0 +1,128 @@
+spring:
+  mail:
+    debug: true
+    host: 'CHANGE_THIS'
+    port: 587
+    protocol: smtp
+    username: 'CHANGE_THIS'
+    password: 'CHANGE_THIS'
+    properties:
+      "mail.transport.protocol": smtp
+      "mail.smtp.auth": true
+      "mail.tls": true
+      "mail.smtp.starttls.enable": true
+  autoconfigure:
+    exclude:
+      - "org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration"
+  rabbitmq:
+    host: dapp-rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+  redis:
+    host: dapp-redis
+    port: 6379
+    password: "password"
+    flush-mode: immediate
+  session:
+    store-type: redis
+    timeout: 2d
+  flyway:
+    enabled: true
+    locations: "classpath:db/migration/{vendor}"
+  # primary datasource
+  datasource:
+    username: "postgres"
+    password: "password"
+    url: "jdbc:postgresql://dapp-db:5432/deployapp_dev_1"
+
+  security:
+    oauth2:
+      client:
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: name
+          google:
+            # needed to obtain the refresh token too
+            # https://stackoverflow.com/questions/69146220/how-to-set-access-type-offline-using-spring-boot-security-and-oauth-flow-to-gene
+            authorization-uri: "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent"
+        registration:
+          github:
+            client-id: CHANGE_THIS
+            client-secret: CHANGE_THIS
+            provider: github
+            redirect-uri: https://{baseHost}{basePort}{basePath}/login/oauth2/code/github
+            scope:
+              - email
+              - profile
+          google:
+            redirect-uri: https://{baseHost}{basePort}{basePath}/login/oauth2/code/google
+            client-id: CHANGE_THIS.apps.googleusercontent.com
+            client-secret: CHANGE_THIS
+            scope:
+              - email
+              - profile
+#              - openid
+
+# comma-separated, see https://github.com/spring-projects/spring-framework/issues/16381
+custom_cors:
+  origins: http://localhost:3000,https://deploy.plan.ovh
+
+custom_app:
+  rate_limit_key_prefix: "dapp_rlimit:"
+  token_validity_duration: 3600
+#  email_retry_cooldown: 600
+  # two attempts in 5 minutes
+  email_retry_rate_limit_duration: 5
+  email_retry_rate_limit_capacity: 2
+  email_from: noreply@CHANGE_THIS
+
+# https://springdoc.org/
+# https://stackoverflow.com/questions/65820916/i-have-installed-openapi-3-using-springdoc-but-the-url-is-strange-can-i-change
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /api-docs/ui
+
+# for async processing with jobrunr
+org:
+  jobrunr:
+    job-scheduler:
+      enabled: true
+    database:
+      type: redis-lettuce
+    dashboard:
+      port: 8082
+      enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+        security: DEBUG
+#          filter:
+#            CommonsRequestLoggingFilter: DEBUG
+
+server:
+  forward-headers-strategy: framework # https://github.com/springdoc/springdoc-openapi/issues/171
+  # port: 8081
+  servlet:
+    session:
+      cookie:
+        # https://stackoverflow.com/questions/33095345/how-to-change-spring-session-redis-cookie-name
+        name: "DEPLOYAPP_SESSION"
+        # needed when testing in staging
+        same-site: None
+        secure: true
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: true
+
+

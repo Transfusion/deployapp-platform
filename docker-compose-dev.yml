@@ -1,0 +1,101 @@
+version: "3.4"
+
+services:
+  dapp-rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - 15672:5672
+      - 25672:15672
+    networks:
+      - deployapp_net
+
+  dapp-redis:
+    image: redis
+    environment:
+      REDIS_PASSWORD: password
+    ports:
+      - 16379:6379
+    networks:
+      - deployapp_net
+
+  dapp-db:
+    image: postgres:latest
+    volumes:
+      - ./docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_MULTIPLE_DATABASES: deployapp_dev_1,deployapp_storage_dev_1
+    ports:
+      - 15432:5432
+    networks:
+      - deployapp_net
+
+  dapp-backend:
+    build:
+      context: deployapp-backend
+      dockerfile: ../Dockerfile-dapp-backend
+
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_LOCATION: file:///config/
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010"
+
+    volumes:
+      - deployapp-backend-sync:/app
+      - ./deployapp-backend-config/:/config
+
+    working_dir: /app
+    command: ./gradlew bootRun
+
+    ports:
+      - 18080:8080
+      - 18082:8082
+    networks:
+      - deployapp_net
+
+  dapp-storage-service:
+    build:
+      context: deployapp-storage-service
+      dockerfile: ../Dockerfile-dapp-storage-service
+
+    environment:
+      # PLEASE CHANGE_THIS
+      GPR_USERNAME: CHANGE_THIS
+      GPR_PAT: CHANGE_THIS
+
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_LOCATION: file:///config/
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010"
+
+    volumes:
+      - deployapp-storage-service-sync:/app
+      - ./deployapp-storage-service-config/:/config
+
+    working_dir: /app
+    command: ./gradlew bootRun
+
+    ports:
+      - 19080:8080
+      - 19082:8082
+    networks:
+      - deployapp_net
+
+  dapp-web:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "12345:80"
+    networks:
+      - deployapp_net
+
+networks:
+  deployapp_net:
+
+
+volumes:
+  deployapp-backend-sync:
+    external: true
+  deployapp-storage-service-sync:
+    external: true

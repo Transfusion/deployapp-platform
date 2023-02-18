@@ -1,0 +1,12 @@
+version: "2"
+
+syncs:
+  deployapp-backend-sync:
+    notify_terminal: true
+    src: './deployapp-backend'
+    sync_excludes: ['.git', '.idea']
+  
+  deployapp-storage-service-sync:
+    notify_terminal: true
+    src: './deployapp-storage-service'
+    sync_excludes: ['.git', '.idea']

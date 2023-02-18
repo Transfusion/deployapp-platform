@@ -1,0 +1,12 @@
+[submodule "deployapp-backend"]
+	path = deployapp-backend
+	url = https://github.com/Transfusion/deployapp-backend.git
+[submodule "deployapp-storage-service"]
+	path = deployapp-storage-service
+	url = https://github.com/Transfusion/deployapp-storage-service.git
+[submodule "deployapp-frontend"]
+	path = deployapp-frontend
+	url = https://github.com/Transfusion/deployapp-frontend.git
+[submodule "docker-postgresql-multiple-databases"]
+	path = docker-postgresql-multiple-databases
+	url = https://github.com/mrts/docker-postgresql-multiple-databases.git
