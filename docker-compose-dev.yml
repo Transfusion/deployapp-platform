@@ -86,7 +86,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - "12345:80"
+      - "12345:12345"
     networks:
       - deployapp_net
 
