@@ -1,0 +1,14 @@
+# https://michalwojcik.com.pl/2020/05/24/node_modules-in-bind-mounts-with-docker/
+FROM node:18-slim
+#add parent directory 
+WORKDIR /node
+COPY package.json package-lock*.json post_install.sh ./
+# install dependencies in /node, skipping the postinstall routine...
+RUN SKIP_POSTINSTALL=yes npm install && npm cache clean --force
+# added new workdir for source files
+# node_modules will be in parent folder, 
+# hence it will be not visible from host file system
+WORKDIR /node/app
+ENTRYPOINT []
+# COPY . .
+# CMD ["node", "index.js"]

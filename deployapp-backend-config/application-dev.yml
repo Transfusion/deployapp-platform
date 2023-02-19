@@ -54,13 +54,13 @@ spring:
             client-id: CHANGE_THIS
             client-secret: CHANGE_THIS
             provider: github
-            redirect-uri: https://{baseHost}{basePort}{basePath}/login/oauth2/code/github
+            redirect-uri: "{baseScheme}://{baseHost}{basePort}{basePath}/login/oauth2/code/github"
             scope:
               - email
               - profile
           google:
-            redirect-uri: https://{baseHost}{basePort}{basePath}/login/oauth2/code/google
-            client-id: CHANGE_THIS.apps.googleusercontent.com
+            redirect-uri: "{baseScheme}://{baseHost}{basePort}{basePath}/login/oauth2/code/google"
+            client-id: 161857946380-4j3d3tiofkp36v60vngpocqc2qgdvbsc.apps.googleusercontent.com
             client-secret: CHANGE_THIS
             scope:
               - email

@@ -10,3 +10,8 @@ syncs:
     notify_terminal: true
     src: './deployapp-storage-service'
     sync_excludes: ['.git', '.idea']
+  
+  deployapp-frontend-sync:
+    notify_terminal: true
+    src: './deployapp-frontend'
+    sync_excludes: ['.git', '.idea', 'node_modules']

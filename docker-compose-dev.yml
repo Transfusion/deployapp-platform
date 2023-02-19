@@ -90,6 +90,22 @@ services:
     networks:
       - deployapp_net
 
+  dapp-frontend:
+    build:
+      context: deployapp-frontend
+      dockerfile: ../Dockerfile-dapp-frontend
+
+    volumes:
+      - deployapp-frontend-sync:/node/app
+      - ./deployapp-frontend-config:/node/app/environments
+      - /node/app/node_modules
+    
+    ports:
+      - "3000:3000"
+
+    working_dir: /node/app
+    command: bash -c "bash post_install.sh && npm run start:dev"
+    
 networks:
   deployapp_net:
 
@@ -98,4 +114,6 @@ volumes:
   deployapp-backend-sync:
     external: true
   deployapp-storage-service-sync:
+    external: true
+  deployapp-frontend-sync:
     external: true
