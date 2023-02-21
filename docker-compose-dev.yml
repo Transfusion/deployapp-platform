@@ -39,18 +39,18 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_LOCATION: file:///config/
-      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010"
 
     volumes:
       - deployapp-backend-sync:/app
       - ./deployapp-backend-config/:/config
 
     working_dir: /app
-    command: ./gradlew bootRun
+    command: ./gradlew bootRun -PjvmArgs="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010"
 
     ports:
       - 18080:8080
       - 18082:8082
+      # - 15010:5010
     networks:
       - deployapp_net
 
@@ -66,18 +66,18 @@ services:
 
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_LOCATION: file:///config/
-      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010"
 
     volumes:
       - deployapp-storage-service-sync:/app
       - ./deployapp-storage-service-config/:/config
 
     working_dir: /app
-    command: ./gradlew bootRun
+    command: ./gradlew bootRun -PjvmArgs="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010"
 
     ports:
       - 19080:8080
       - 19082:8082
+      # - 16010:5010
     networks:
       - deployapp_net
 
