@@ -33,6 +33,25 @@ custom_cors:
 custom_app:
   lock_registry_key_prefix: "dapp_storage_lock"
 
+management:
+  info:
+    git:
+      mode: full
+  endpoints:
+    web:
+      cors:
+        allowed-origins: '*'
+        allowed-methods: GET
+      health:
+        # https://stackoverflow.com/questions/46326527/spring-boot-actuator-endpoint-sensitivity-vs-security-enablement
+        info:
+          sensitive: false
+      exposure:
+        include:
+          - info
+          - beans
+          - loggers
+
 # https://springdoc.org/
 # https://stackoverflow.com/questions/65820916/i-have-installed-openapi-3-using-springdoc-but-the-url-is-strange-can-i-change
 springdoc:

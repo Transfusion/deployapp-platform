@@ -21,6 +21,7 @@ services:
   dapp-db:
     image: postgres:latest
     volumes:
+      - postgres:/var/lib/postgresql/data
       - ./docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: postgres
@@ -50,7 +51,7 @@ services:
     ports:
       - 18080:8080
       - 18082:8082
-      # - 15010:5010
+      - 15010:5010
     networks:
       - deployapp_net
 
@@ -76,17 +77,18 @@ services:
 
     ports:
       - 19080:8080
-      - 19082:8082
-      # - 16010:5010
+      - 16010:5010
     networks:
       - deployapp_net
 
   dapp-web:
     image: nginx:alpine
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./deployapp-web-config/nginx.conf:/etc/nginx/nginx.conf
+      - ./deployapp-web-config/certs:/etc/nginx/certs
     ports:
       - "12345:12345"
+      - "12346:12346"
     networks:
       - deployapp_net
 
@@ -100,17 +102,23 @@ services:
       - ./deployapp-frontend-config:/node/app/environments
       - /node/app/node_modules
     
-    ports:
-      - "3000:3000"
+    # proxy this through dapp-web nginx too because of HSTS during oauth2 redirect
+    # https://stackoverflow.com/questions/47207364/safari-is-forcing-https-on-everything-when-i-dont-want-it-to
+    # ports:
+    #   - "3000:3000"
 
     working_dir: /node/app
-    command: bash -c "bash post_install.sh && npm run start:dev"
+    command: bash -c "bash post_install.sh && WDS_SOCKET_PORT=0 npm run start:dev"
+    networks:
+      - deployapp_net
     
 networks:
   deployapp_net:
 
 
 volumes:
+  postgres:
+    external: false
   deployapp-backend-sync:
     external: true
   deployapp-storage-service-sync:
