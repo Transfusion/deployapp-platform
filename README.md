@@ -46,7 +46,8 @@ DeployApp will be available at `https://CHANGE_THIS.local:12346`.
 TBD
 
 ## Architecture
-TBD
+![DeployApp Architecture Diagram](https://user-images.githubusercontent.com/3119646/222884535-bc5f823d-32bd-4347-a57e-b7ae4ab9e1f2.png)
+
 
 ## Ports Overview
 
