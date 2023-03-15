@@ -95,6 +95,7 @@ server:
       cookie:
         # https://stackoverflow.com/questions/33095345/how-to-change-spring-session-redis-cookie-name
         name: "DEPLOYAPP_SESSION"
+        path: /
   error:
     include-message: always
     include-binding-errors: always

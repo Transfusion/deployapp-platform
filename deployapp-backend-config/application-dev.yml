@@ -134,6 +134,7 @@ server:
         # needed when testing in staging
         # same-site: None
         # secure: true
+        path: /
   error:
     include-message: always
     include-binding-errors: always
