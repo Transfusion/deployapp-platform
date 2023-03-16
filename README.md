@@ -1,4 +1,29 @@
-# DeployApp 
+# [DeployApp](https://deploy.plan.ovh)
+Yet another `.ipa` / `.apk` beta app distribution platform - that uploads to and serves from your own cloud storage. Installs are quicker and apps do not expire.
+
+<p align="middle">
+  <a href="https://user-images.githubusercontent.com/3119646/225541054-6da31bf5-b689-47a2-a21c-f68d3ebe8ced.png" target="_blank">
+    <img src="https://user-images.githubusercontent.com/3119646/225541054-6da31bf5-b689-47a2-a21c-f68d3ebe8ced.png" width="40%" />
+  </a>
+  <a href="https://user-images.githubusercontent.com/3119646/225541297-be81cea5-99e0-4311-b343-8e55b5a48e7e.png" target="_blank">
+    <img src="https://user-images.githubusercontent.com/3119646/225541297-be81cea5-99e0-4311-b343-8e55b5a48e7e.png" width="59%" />
+  </a>
+</p>
+
+
+<div align="center">
+  <a target="_blank" href="https://deploy.plan.ovh">Live site!</a>
+  <span> • </span>
+  <a href="#architecture">Architecture Diagram</a>
+  <span> • </span>
+  <a href="https://github.com/Transfusion/deployapp-backend/">Main Backend Service</a>
+  <span> • </span>
+  <a href="https://github.com/Transfusion/deployapp-storage-service">Storage Service</a>
+  <span> • </span>
+  <a href="https://github.com/Transfusion/deployapp-frontend">Frontend</a>
+</div>
+
+<br/>
 
 ## Running (Development)
 1. Install [`docker-sync`](http://docker-sync.io/) and [`mkcert`](https://github.com/FiloSottile/mkcert)
@@ -44,6 +69,13 @@ DeployApp will be available at `https://CHANGE_THIS.local:12346`.
 ## Running (Release)
 
 TBD
+
+## Production Details
+The live instance of DeployApp currently runs in a K8s cluster. At least 1.5 GB of free memory is recommended for each replica of the storage service.
+
+![Kubernetes Dashboard Pods](https://user-images.githubusercontent.com/3119646/225543390-02adf83a-434b-496f-9c41-14a88e1ed6ab.png)
+
+All the `.yaml` objects [can be found here](https://github.com/Transfusion/deployapp-platform/wiki/Deployment-to-K8S).
 
 ## Architecture
 ![DeployApp Architecture Diagram](https://user-images.githubusercontent.com/3119646/222884535-bc5f823d-32bd-4347-a57e-b7ae4ab9e1f2.png)
