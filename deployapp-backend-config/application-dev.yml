@@ -77,6 +77,9 @@ custom_app:
   email_retry_rate_limit_duration: 5
   email_retry_rate_limit_capacity: 2
 management:
+  health:
+    probes:
+      enabled: true
   info:
     git:
       mode: full
@@ -94,6 +97,7 @@ management:
           - info
           - beans
           - loggers
+          - health
 
 # https://springdoc.org/
 # https://stackoverflow.com/questions/65820916/i-have-installed-openapi-3-using-springdoc-but-the-url-is-strange-can-i-change

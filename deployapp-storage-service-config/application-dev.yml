@@ -32,6 +32,11 @@ custom_cors:
 
 custom_app:
   lock_registry_key_prefix: "dapp_storage_lock"
+  # app parsing threads
+  core_pool_size: 2
+  max_pool_size: 2
+  queue_capacity: 40 # 60 mins / 1.5 min per app parsing (conservative estimate)
+  rubyCleanSleep: 10000
 
 management:
   info:
@@ -71,6 +76,7 @@ org:
     database:
       type: redis-lettuce
     background-job-server:
+      worker_count: 2
       enabled: true
       poll-interval-in-seconds: 5
     dashboard:
